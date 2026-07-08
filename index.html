@@ -95,10 +95,12 @@
     /* ----- COLUMNAS ----- */
     .col-large {
       flex: 1.2;
+      min-width: 0; /* Evita desbordamiento */
     }
 
     .col-small {
       flex: 0.8;
+      min-width: 0; /* Evita desbordamiento */
     }
 
     .col-solo {
@@ -234,53 +236,198 @@
       font-size: 0.9rem;
     }
 
-    /* ========== RESPONSIVE ========== */
+    /* ============================================================
+       RESPONSIVE: En celular se mantiene una imagen grande y otra pequeña al lado
+       ============================================================ */
     @media (max-width: 768px) {
-      .row,
-      .row.reverse {
-        flex-direction: column;
-        gap: 50px;
+      /* Las filas con 2 columnas se mantienen una al lado de la otra */
+      .row {
+        flex-direction: row; /* Forzamos que siga siendo horizontal */
+        gap: 20px;
+        padding: 30px 0;
       }
 
-      .col-large,
+      .row.reverse {
+        flex-direction: row-reverse; /* Mantenemos el orden invertido */
+      }
+
+      /* Ajustamos proporciones para que se vean bien en pantallas pequeñas */
+      .col-large {
+        flex: 1.5;
+      }
+
       .col-small {
         flex: 1;
       }
 
-      .product-info .desc {
-        max-width: 100%;
+      /* Reducimos el tamaño de las imágenes en celular */
+      .product-image {
+        aspect-ratio: 3/4; /* Más alta que ancha para que se vea mejor */
+        border-radius: 8px;
       }
 
-      .row-solo .col-solo {
-        max-width: 100%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .row,
-      .row-solo {
-        padding: 30px 0;
-      }
-
+      /* Texto más pequeño en celular */
       .product-info h3 {
-        font-size: 1.3rem;
+        font-size: 1rem;
       }
 
       .col-small .product-info h3 {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
+      }
+
+      .product-info .desc {
+        font-size: 0.8rem;
+        max-width: 100%;
+      }
+
+      .price-line .amount {
+        font-size: 1rem;
+      }
+
+      .price-line .label {
+        font-size: 0.7rem;
+      }
+
+      .whatsapp-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+      }
+
+      .whatsapp-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .product-info .tag {
+        font-size: 0.6rem;
+      }
+
+      /* La fila centrada (solo) se ajusta */
+      .row-solo .col-solo {
+        max-width: 80%;
+      }
+    }
+
+    /* ===== Para pantallas muy pequeñas (menos de 480px) ===== */
+    @media (max-width: 480px) {
+      .row {
+        gap: 15px;
+        padding: 25px 0;
+      }
+
+      .col-large {
+        flex: 1.6;
+      }
+
+      .col-small {
+        flex: 1;
+      }
+
+      .product-info {
+        padding-top: 12px;
+      }
+
+      .product-info h3 {
+        font-size: 0.85rem;
+        margin: 3px 0 5px;
+      }
+
+      .col-small .product-info h3 {
+        font-size: 0.75rem;
+      }
+
+      .product-info .desc {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limita a 2 líneas en celular muy pequeño */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .price-line {
+        max-width: 100%;
+        padding: 4px 0;
+      }
+
+      .price-line .amount {
+        font-size: 0.85rem;
+      }
+
+      .price-line .label {
+        font-size: 0.6rem;
+      }
+
+      .whatsapp-btn {
+        padding: 6px 12px;
+        font-size: 0.65rem;
+        gap: 6px;
+      }
+
+      .whatsapp-btn svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      .prices {
+        margin-bottom: 12px;
+      }
+    }
+
+    /* ===== Para celulares muy pequeños (320px) ===== */
+    @media (max-width: 380px) {
+      .row {
+        gap: 10px;
+        padding: 20px 0;
+      }
+
+      .product-image {
+        aspect-ratio: 2/3;
+        border-radius: 6px;
+      }
+
+      .product-info h3 {
+        font-size: 0.7rem;
+      }
+
+      .col-small .product-info h3 {
+        font-size: 0.65rem;
+      }
+
+      .product-info .desc {
+        font-size: 0.6rem;
+        -webkit-line-clamp: 1; /* Una sola línea */
+      }
+
+      .price-line .amount {
+        font-size: 0.7rem;
+      }
+
+      .price-line .label {
+        font-size: 0.5rem;
+      }
+
+      .whatsapp-btn {
+        padding: 4px 10px;
+        font-size: 0.55rem;
+        gap: 4px;
+      }
+
+      .whatsapp-btn svg {
+        width: 10px;
+        height: 10px;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header>
   <div class="logo">✦ Dulce Noche</div>
 </header>
 
 <section class="hero">
-  <h1>Pijamas hechas para <span>soñar</span></h1>
+  <h3>Pijamas hechas para <span>soñar</span></h3>
   <p>Colección Noches de Algodón · Confort y estilo para tus noches</p>
 </section>
 
@@ -293,7 +440,7 @@
           <img src="img/1.jpeg" alt="Pijama Hello Kitty">
         </div>
         <div class="product-info">
-          <span class="tag">Short mas blusa de tiras</span>
+          <span class="tag">Short + blusa de tiras</span>
           <h3>Pijama Hello Kitty</h3>
           <p class="desc">Conjunto de short en algodón suave con top de tirantes, en tela piel de durazno</p>
           <div class="prices">
@@ -310,7 +457,6 @@
       </div>
     </div>
 
-    <!-- Producto Pequeño -->
     <div class="col-small">
       <div class="product">
         <div class="product-image">
@@ -334,12 +480,13 @@
       </div>
     </div>
   </div>
+
+  <!-- ===== FILA 2 ===== -->
   <div class="row">
-    <!-- Producto Grande -->
     <div class="col-large">
       <div class="product">
         <div class="product-image">
-          <img src="img/3.jpeg" alt="Pijama Luna de Miel">
+          <img src="img/3.jpeg" alt="Pijama Bob Esponja">
         </div>
         <div class="product-info">
           <span class="tag">Short + blusa</span>
@@ -359,11 +506,10 @@
       </div>
     </div>
 
-    <!-- Producto Pequeño -->
     <div class="col-small">
       <div class="product">
         <div class="product-image">
-          <img src="img/4.jpeg" alt="Pijama Nube Rosa">
+          <img src="img/4.jpeg" alt="Pijama Bob Esponja">
         </div>
         <div class="product-info">
           <span class="tag">Set camisero</span>
@@ -384,12 +530,12 @@
     </div>
   </div>
 
+  <!-- ===== FILA 3 ===== -->
   <div class="row">
-    <!-- Producto Grande -->
     <div class="col-large">
       <div class="product">
         <div class="product-image">
-          <img src="img/5.jpeg" alt="Pijama Luna de Miel">
+          <img src="img/5.jpeg" alt="Pijama Garfield">
         </div>
         <div class="product-info">
           <span class="tag">Short + blusa</span>
@@ -409,11 +555,10 @@
       </div>
     </div>
 
-    <!-- Producto Pequeño -->
     <div class="col-small">
       <div class="product">
         <div class="product-image">
-          <img src="img/6.jpeg" alt="Pijama Nube Rosa">
+          <img src="img/6.jpeg" alt="Pijama Garfield">
         </div>
         <div class="product-info">
           <span class="tag">Set camisero</span>
@@ -434,12 +579,12 @@
     </div>
   </div>
 
-  <!-- ===== FILA SOLO 1: Centrada ===== -->
+  <!-- ===== FILA SOLO: Centrada ===== -->
   <div class="row-solo">
     <div class="col-solo">
       <div class="product">
         <div class="product-image">
-          <img src="img/3.jpeg" alt="Pijama Susurro de Seda">
+          <img src="img/7.png" alt="Pijama Susurro de Seda">
         </div>
         <div class="product-info">
           <span class="tag">Set camisón</span>
@@ -455,11 +600,11 @@
               <span class="amount">$25,000</span>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
+
 </main>
 
 <!-- ===== FOOTER ===== -->
@@ -467,5 +612,6 @@
   <div class="logo">✦ Dulce Noche</div>
   <p>Hecho con cariño para tus noches más suaves.</p>
 </footer>
+
 </body>
 </html>
